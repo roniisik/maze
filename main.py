@@ -12,7 +12,8 @@ def main():
     cell1.draw(cell1._x1, cell1._y1, cell1._x2, cell1._y2)
     cell2.draw(cell2._x1, cell2._y1, cell2._x2, cell2._y2)
     cell2.draw_move(cell1) """
-    maze = Maze(20, 20, 10, 10, 50, 50, win, 1)
+    maze = Maze(20, 20, 10, 10, 50, 50, win, 3)
+    print(maze.solve())
     
 
     win.wait_for_close()

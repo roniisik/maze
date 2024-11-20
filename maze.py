@@ -34,11 +34,67 @@ class Maze():
         self._reset_cells_visited()
 
 
+    def solve(self):
+        res = self._solve_r(0, 0)
+        return res
+
+    def _solve_r(self, i, j):
+        cur_cell = self._cells[i][j]
+        self._animate()
+        self._cells[i][j].visited = True
+
+        if i == self.num_cols - 1 and j == self.num_rows - 1:
+            return True
+        
+        if (i < len(self._cells) - 1 and
+            not cur_cell.has_right_wall and
+            not self._cells[i + 1][j].visited
+            ):
+            cur_cell.draw_move(self._cells[i + 1][j])
+            move_dir = self._solve_r(i + 1, j)
+            if move_dir:
+                return True
+            cur_cell.draw_move(self._cells[i + 1][j], undo=True)
+        
+        if (j < len(self._cells[0]) - 1 and
+            not cur_cell.has_bottom_wall and
+            not self._cells[i][j+1].visited
+            ):
+            cur_cell.draw_move(self._cells[i][j+1])
+            move_dir = self._solve_r(i, j+1)
+            if move_dir:
+                return True
+            cur_cell.draw_move(self._cells[i][j+1], undo=True)
+
+        if (i > 0 and
+            not cur_cell.has_left_wall and
+            not self._cells[i - 1][j].visited
+            ):
+            cur_cell.draw_move(self._cells[i-1][j])
+            move_dir = self._solve_r(i - 1, j)
+            if move_dir:
+                return True
+            cur_cell.draw_move(self._cells[i - 1][j], undo=True)
+
+        if (j > 0 and
+            not cur_cell.has_top_wall and
+            not self._cells[i][j-1].visited
+            ):
+            cur_cell.draw_move(self._cells[i][j-1])
+            move_dir = self._solve_r(i, j-1)
+            if move_dir:
+                return True
+            cur_cell.draw_move(self._cells[i][j-1], undo=True)
+
+        return False
+
+
+
+
     def _reset_cells_visited(self):
         for col in self._cells:
             for cell in col:
                 cell.visited = False
-
 
 
     def _break_walls_r(self, i, j):
