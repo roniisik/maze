@@ -2,7 +2,7 @@ from window import *
 
 
 class Cell():
-    def __init__(self, p1, p2, window):
+    def __init__(self, p1, p2, window = None):
         self._x1 = p1.x
         self._y1 = p1.y
         self._x2 = p2.x
@@ -12,6 +12,7 @@ class Cell():
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
+        self.visited = False
 
     
     def draw_move(self, to_cell, undo=False):
@@ -26,19 +27,33 @@ class Cell():
 
     
     def draw(self, x1, y1, x2, y2):
+        if self._win is None:
+            return
         
         if self.has_top_wall:
             line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
             self._win.draw(line)
+        else:
+            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
+            self._win.draw(line, "#d9d9d9")
         
         if self.has_bottom_wall:
             line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
             self._win.draw(line)
+        else:
+            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
+            self._win.draw(line, "#d9d9d9")
 
         if self.has_left_wall:
             line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
             self._win.draw(line)
+        else:
+            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
+            self._win.draw(line, "#d9d9d9")
 
         if self.has_right_wall:
             line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
             self._win.draw(line)
+        else:
+            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
+            self._win.draw(line, "#d9d9d9")
